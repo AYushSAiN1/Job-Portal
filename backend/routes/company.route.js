@@ -17,6 +17,8 @@ router
   .post(isAuthenticated, isAuthorized, uploadFiles, registerCompany);
 router.route("/get").get(isAuthenticated, getCompany);
 router.route("/get/:id").get(getCompanyById);
-router.route("/update/:id").put(isAuthenticated, isAuthorized, updateCompany);
+router
+  .route("/update/:id")
+  .put(isAuthenticated, isAuthorized, uploadFiles, updateCompany);
 
 export default router;

@@ -68,7 +68,7 @@ function CompaniesTable() {
                                                     <span>Details</span>
                                                 </div>
                                             </PopoverContent>
-                                        </Popover> : <p >Not Available</p>
+                                        </Popover> : <p >N/A</p>
                                 }
                             </TableCell>
                         </TableRow>

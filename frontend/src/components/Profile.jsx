@@ -8,8 +8,11 @@ import { Label } from './ui/label';
 import AppliedJobsTable from './AppliedJobsTable';
 import EditProfileDialog from './EditProfileDialog';
 import { useSelector } from 'react-redux';
+import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
 
 function Profile() {
+    useGetAppliedJobs();
+
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
     return (
@@ -72,6 +75,7 @@ function Profile() {
             <EditProfileDialog
                 open={open} setOpen={setOpen}
             />
+
         </div >
     );
 }

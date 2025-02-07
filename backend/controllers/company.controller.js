@@ -94,42 +94,42 @@ export const getCompanyById = async (req, res) => {
 export const updateCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
+    const companyId = req.params.id;
 
-    const updateData = { name, description, website, location };
-
-    const company = await Company.findById(req.params.id);
+    let company = await Company.findById(companyId);
     if (!company) {
-      return res.status(404).json({
-        message: "Company not found",
-        success: false,
-      });
+      return res
+        .status(404)
+        .json({ success: false, message: "Company not found" });
+    }
+    console.log("Updated Company Data Before Saving:", company);
+
+    let logo = company.logo;
+
+    if (req.files && req.files.companyLogo) {
+      const logoUri = getDataUri(req.files.companyLogo[0]);
+      const cloudResponse = await cloudinary.uploader.upload(logoUri.content);
+      logo = cloudResponse.secure_url;
     }
 
-    if (company.userId.toString() !== req.id) {
-      return res.status(403).json({
-        message: "You are not authorized to update this company",
-        success: false,
-      });
-    }
-
-    Object.keys(updateData).forEach((key) => {
-      if (updateData[key] !== undefined) {
-        company[key] = updateData[key];
-      }
-    });
+    // Update company details
+    company.name = name || company.name;
+    company.website = website || company.website;
+    company.location = location || company.location;
+    company.description = description || company.description;
+    company.logo = logo;
 
     await company.save();
-
+    console.log("Updated Company Data After Saving:", company);
     return res.status(200).json({
-      message: "Company information updated successfully",
       success: true,
+      message: "Company details updated successfully",
       company,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      message: "An error occurred while updating the company",
-      success: false,
-    });
+    console.error("Error updating company details:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };

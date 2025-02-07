@@ -146,7 +146,7 @@ export const logout = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
-    const userId = req.id; // Middleware authentication
+    const userId = req.id;
 
     let user = await User.findById(userId);
     if (!user) {
@@ -161,7 +161,7 @@ export const updateProfile = async (req, res) => {
     }
 
     // Upload files to Cloudinary
-    let profilePhotoUrl = user.profile.profilePhoto; // Keep existing value
+    let profilePhotoUrl = user.profile.profilePhoto;
     let resumeUrl = user.profile.resume;
     let resumeOriginalName = user.profile.resumeOriginalName;
 

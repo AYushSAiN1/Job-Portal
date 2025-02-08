@@ -7,7 +7,6 @@ import Navbar from '../shared/Navbar';
 import { Button } from '../ui/button';
 import JobsTable from './JobsTable';
 import EditCompanyDialog from './EditCompanyDialog';
-import { Badge } from '../ui/badge';
 import { Avatar, AvatarImage } from '../ui/avatar';
 
 function CompanyDetails() {
@@ -76,19 +75,6 @@ function CompanyDetails() {
                     </p>
                 </div>
 
-                {/* Company Tags (e.g., industry, specialties) */}
-                {singleCompany?.tags && singleCompany.tags.length > 0 && (
-                    <div className="mt-6">
-                        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Tags</h2>
-                        <div className="flex flex-wrap gap-2">
-                            {singleCompany.tags.map((tag, index) => (
-                                <Badge key={index} className="bg-indigo-500 text-white px-3 py-1 rounded-md">
-                                    {tag}
-                                </Badge>
-                            ))}
-                        </div>
-                    </div>
-                )}
 
                 {/* Jobs Table */}
                 <div className="mt-6">
@@ -100,11 +86,6 @@ function CompanyDetails() {
             {/* Edit Company Dialog */}
             <EditCompanyDialog open={open} setOpen={setOpen} company={singleCompany} />
         </div>
-
-
-
-
-
 
 
     );

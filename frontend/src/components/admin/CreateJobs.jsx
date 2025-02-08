@@ -18,8 +18,9 @@ import { setLoading } from "@/redux/authSlice";
 import { useNavigate } from "react-router-dom";
 
 function CreateJobs() {
-    const { loading } = useSelector(store => store.auth);
+    const { loading, user } = useSelector(store => store.auth);
     const { allCompanies } = useSelector(store => store.company);
+    const comapanies = allCompanies.filter((company) => company?.userId === user?._id);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -36,16 +37,16 @@ function CreateJobs() {
         companyId: "",
     });
     const [searchQuery, setSearchQuery] = useState("");
-    const [filteredCompanies, setFilteredCompanies] = useState(allCompanies);
+    const [filteredCompanies, setFilteredCompanies] = useState(comapanies);
 
     useEffect(() => {
         // Filter companies whenever searchQuery changes
         setFilteredCompanies(
-            allCompanies.filter((company) =>
+            comapanies.filter((company) =>
                 company.name.toLowerCase().includes(searchQuery.toLowerCase())
             )
         );
-    }, [searchQuery, allCompanies]);
+    }, [searchQuery, comapanies]);
 
 
     const handleChange = (e) => {
@@ -54,7 +55,6 @@ function CreateJobs() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
         dispatch(setLoading(true));
         try {
             const res = await axios.post(`${JOBS_API_ENDPOINT}/post`, formData, { withCredentials: true });

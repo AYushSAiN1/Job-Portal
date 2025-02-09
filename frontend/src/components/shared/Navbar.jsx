@@ -9,6 +9,7 @@ import axios from 'axios';
 import { USER_API_ENDPOINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
+import { Briefcase } from 'react-feather';
 
 function Navbar() {
   const { user } = useSelector((store) => store.auth);
@@ -118,7 +119,13 @@ function Navbar() {
                     </Link>
 
                     <hr className="border-gray-300 dark:border-gray-600" />
+                    {
+                      user?.role === 'recruiter' ?
+                        <Link className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition">
+                          <h4 className="flex gap-2 font-semibold text-base"> <Briefcase></Briefcase>Your Jobs</h4>
 
+                        </Link> : <></>
+                    }
                     {/* Logout */}
                     <button
                       onClick={logoutHandler}

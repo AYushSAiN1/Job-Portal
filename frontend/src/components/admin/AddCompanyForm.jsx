@@ -72,7 +72,7 @@ function AddCompanyForm() {
                 <div className="w-full max-w-lg mt-16 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
                     <h1 className="text-2xl font-bold text-black dark:text-white mb-2">Add Company</h1>
                     <p className="text-gray-600 dark:text-gray-400 mb-6">Fill in the details to add a new company.</p>
-                    <form onSubmit={handleSubmit}>
+                    <form >
                         <div className="space-y-4">
                             <div>
                                 <Label>Company Name*</Label>
@@ -101,7 +101,7 @@ function AddCompanyForm() {
                         <div className="flex justify-end gap-2 mt-8">
                             <Button variant="outline" onClick={() => navigate("/companies")}>Cancel</Button>
                             {
-                                loading ? <Button > <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button className="bg-indigo-600 hover:bg-indigo-700 text-white" type="submit">Continue</Button>
+                                loading ? <Button > <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait </Button> : <Button className="bg-indigo-600 hover:bg-indigo-700 text-white" type="submit" onClick={handleSubmit}>Continue</Button>
                             }
                         </div>
                     </form>

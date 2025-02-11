@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { JOBS_API_ENDPOINT } from "@/utils/constant";
+import { JOB_API_ENDPOINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { setLoading } from "@/redux/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 function CreateJobs() {
     const { loading, user } = useSelector(store => store.auth);
     const { allCompanies } = useSelector(store => store.company);
-    const comapanies = allCompanies.filter((company) => company?.userId === user?._id);
+    const companies = allCompanies.filter((company) => company?.userId === user?._id);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,17 +37,15 @@ function CreateJobs() {
         companyId: "",
     });
     const [searchQuery, setSearchQuery] = useState("");
-    const [filteredCompanies, setFilteredCompanies] = useState(comapanies);
+    const [filteredCompanies, setFilteredCompanies] = useState(companies);
 
     useEffect(() => {
-        // Filter companies whenever searchQuery changes
         setFilteredCompanies(
-            comapanies.filter((company) =>
+            companies.filter((company) =>
                 company.name.toLowerCase().includes(searchQuery.toLowerCase())
             )
         );
-    }, [searchQuery, comapanies]);
-
+    }, [searchQuery, companies]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,11 +53,14 @@ function CreateJobs() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("Submitting job post...");
         dispatch(setLoading(true));
+
         try {
-            const res = await axios.post(`${JOBS_API_ENDPOINT}/post`, formData, { withCredentials: true });
+            const res = await axios.post(`${JOB_API_ENDPOINT}/post`, formData, { withCredentials: true });
             if (res.data.success) {
                 toast.success(res.data.message);
+                console.log("Navigating to /companies...");
                 navigate("/companies");
             }
         } catch (error) {
@@ -69,6 +70,7 @@ function CreateJobs() {
         }
     };
 
+
     return (
         <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
             <Navbar />
@@ -77,7 +79,6 @@ function CreateJobs() {
                     Post a New Job
                 </h1>
                 <form onSubmit={handleSubmit} className="space-y-6">
-
                     {/* Job Details Section */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
@@ -241,18 +242,16 @@ function CreateJobs() {
                                 </SelectTrigger>
 
                                 <SelectContent className="max-h-60 overflow-auto z-50">
-                                    {/* Search input with auto-focus */}
                                     <div className="p-2">
                                         <Input
-                                            ref={(inputRef) => inputRef?.focus()} // Auto-focus when dropdown opens
                                             placeholder="Search for a company..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             className="w-full border-none focus:ring-0"
+                                            autoFocus
                                         />
                                     </div>
 
-                                    {/* Filtered companies list */}
                                     {filteredCompanies.length > 0 ? (
                                         filteredCompanies.map((company) => (
                                             <SelectItem key={company._id} value={company._id}>
@@ -284,11 +283,21 @@ function CreateJobs() {
                         </div>
                     </div>
 
-
                     {/* Submit Button */}
                     <div className="flex justify-end gap-2 mt-8">
-                        <Button variant="outline" onClick={() => navigate("/companies")}>Cancel</Button>
-                        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white" type="submit">
+                        <Button
+                            variant="outline"
+                            type="button"
+                            onClick={() => navigate("/companies")}
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                            type="submit"
+                            disabled={loading}
+                        >
                             {loading ? "Posting..." : "Post Job"}
                         </Button>
                     </div>

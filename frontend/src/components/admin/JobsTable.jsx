@@ -1,24 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash } from "lucide-react";
-import { useSelector } from "react-redux";
+import { Trash, Edit } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import axios from "axios";
+import { JOB_API_ENDPOINT } from "@/utils/constant";
+import { toast } from "sonner";
+import { setAllJobs } from "@/redux/jobSlice";
 
 function JobsTable() {
     const { singleCompany } = useSelector((state) => state.company);
     const { allJobs } = useSelector((state) => state.job);
+    const { loading } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
     const jobs = allJobs?.filter((job) => job?.company?._id === singleCompany?._id) || [];
 
-    const handleEdit = (job) => {
-        console.log("Edit Job:", job);
-        // Add your edit logic here
+    const handleDelete = async (id) => {
+        dispatch(setLoading(true));
+        try {
+            const res = await axios.delete(`${JOB_API_ENDPOINT}/delete/${id}`, { withCredentials: true });
+            if (res.data.success) {
+                toast.success("Job deleted successfully!");
+                dispatch(setAllJobs(allJobs.filter((job) => job._id !== id)));
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "An error occurred");
+        } finally {
+            dispatch(setLoading(false));
+        }
     };
 
-    const handleDelete = (jobId) => {
-        console.log("Delete Job ID:", jobId);
-        // Add delete API call logic here
-    };
 
     return (
         <div className="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
@@ -44,11 +57,8 @@ function JobsTable() {
                                     <TableCell>{job.location}</TableCell>
                                     <TableCell>{job.jobType}</TableCell>
                                     <TableCell className="text-right space-x-2">
-                                        <Button variant="outline" size="sm" onClick={() => handleEdit(job)}>
-                                            <Pencil className="h-4 w-4 mr-1" /> Edit
-                                        </Button>
-                                        <Button variant="destructive" size="sm" onClick={() => handleDelete(job._id)}>
-                                            <Trash className="h-4 w-4 mr-1" /> Delete
+                                        <Button variant="destructive" onClick={() => handleDelete(job._id)}>
+                                            {loading ? "Deleting..." : <><Trash className="h-4 w-4 mr-1" /> Delete</>}
                                         </Button>
                                     </TableCell>
                                 </TableRow>

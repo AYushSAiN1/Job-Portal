@@ -8,10 +8,12 @@ import { Button } from '../ui/button';
 import JobsTable from './JobsTable';
 import EditCompanyDialog from './EditCompanyDialog';
 import { Avatar, AvatarImage } from '../ui/avatar';
+import useGetAllJobs from '@/hooks/useGetAllJobs';
 
 function CompanyDetails() {
     const params = useParams();
-    useGetCompany(params.id); // Fetch company details
+    useGetCompany(params.id);
+    useGetAllJobs();
 
     const { singleCompany } = useSelector((state) => state.company);
     const [open, setOpen] = useState(false);

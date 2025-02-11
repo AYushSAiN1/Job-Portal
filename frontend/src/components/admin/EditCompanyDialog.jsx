@@ -74,7 +74,7 @@ function EditCompanyDialog({ open, setOpen, company }) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-lg p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            <DialogContent className="max-w-lg p-6  rounded-lg shadow-lg">
                 <DialogHeader>
                     <DialogTitle className="text-lg font-semibold">Edit Company</DialogTitle>
                     <DialogDescription>Update your company details and logo.</DialogDescription>

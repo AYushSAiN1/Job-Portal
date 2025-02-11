@@ -9,12 +9,18 @@ import AppliedJobsTable from './AppliedJobsTable';
 import EditProfileDialog from './EditProfileDialog';
 import { useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
+import PostedJobsTable from './admin/PostedJobsTable';
+import useGetAllPostedJobs from '@/hooks/useGetAllPostedJobs';
 
 function Profile() {
     useGetAppliedJobs();
 
+
     const [open, setOpen] = useState(false);
     const { user } = useSelector(store => store.auth);
+
+    user && user?.role == "recruiter" ? useGetAllPostedJobs() : <></>
+
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100">
             <Navbar />
@@ -65,10 +71,15 @@ function Profile() {
             </div>
 
             {
-                user && user?.role == "recruiter" ? <> </> : <div className='max-w-4xl mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-8 my-10'>
-                    <h1 className='font-bold text-xl text-gray-900 dark:text-gray-100 mb-5'>Applied Jobs</h1>
-                    <AppliedJobsTable />
-                </div>
+                user && user?.role == "recruiter" ?
+                    <div className='max-w-4xl mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-8 my-10'>
+                        <h1 className='font-bold text-xl text-gray-900 dark:text-gray-100 mb-5'>Posted Jobs</h1>
+                        <PostedJobsTable />
+                    </div> :
+                    <div className='max-w-4xl mx-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg p-8 my-10'>
+                        <h1 className='font-bold text-xl text-gray-900 dark:text-gray-100 mb-5'>Applied Jobs</h1>
+                        <AppliedJobsTable />
+                    </div>
             }
 
             {/* Edit Profile Dialog */}

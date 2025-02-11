@@ -90,10 +90,12 @@ export const getApplicants = async (req, res) => {
 
     const applicants = job.applications.map((application) => {
       return {
+        _id: application._id,
         fullname: application.applicant.fullname,
         email: application.applicant.email,
         status: application.status,
-        // resume: application.applicant.resume,
+        resume: application.applicant.profile.resume,
+        avatar: application.applicant.profile.profilePhoto,
       };
     });
 

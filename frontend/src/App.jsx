@@ -11,6 +11,7 @@ import Companies from "./components/admin/Companies";
 import AddCompanyForm from "./components/admin/AddCompanyForm";
 import CreateJobs from "./components/admin/CreateJobs";
 import CompanyDetail from "./components/admin/CompanyDetail";
+import JobApplicants from "./components/admin/JobApplicants";
 
 
 const appRouter = createBrowserRouter([
@@ -75,6 +76,12 @@ const appRouter = createBrowserRouter([
     path: "/jobs/create",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <CreateJobs />
+    </ThemeProvider>,
+  },
+  {
+    path: "/jobs/:id/applicants",
+    element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <JobApplicants />
     </ThemeProvider>,
   },
 ]

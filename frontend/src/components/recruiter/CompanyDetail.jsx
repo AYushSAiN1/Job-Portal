@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useGetCompany from '@/hooks/useGetCompany';
-import { useSelector } from 'react-redux';
-import { Briefcase, MapPin, Globe, Users, Edit } from 'react-feather';
+import { useDispatch, useSelector } from 'react-redux';
+import { Briefcase, MapPin, Globe, Users, Edit, Trash } from 'react-feather';
 import Navbar from '../shared/Navbar';
 import { Button } from '../ui/button';
 import JobsTable from './JobsTable';
 import EditCompanyDialog from './EditCompanyDialog';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import { setLoading } from '@/redux/authSlice';
+import axios from 'axios';
+import { COMPANY_API_ENDPOINT } from '@/utils/constant';
 
 function CompanyDetails() {
     const params = useParams();
@@ -16,7 +19,21 @@ function CompanyDetails() {
     useGetAllJobs();
 
     const { singleCompany } = useSelector((state) => state.company);
+    const { user, loading } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const [open, setOpen] = useState(false);
+    const handleDelete = async () => {
+        dispatch(setLoading(true))
+        try {
+            const res = axios.delete(`${COMPANY_API_ENDPOINT}/${params.id}/delete`, {
+                withCredentials: true
+            })
+        } catch (error) {
+
+        } finally {
+            dispatch(setLoading(false))
+        }
+    }
 
     if (!singleCompany) {
         return <div className="text-center mt-10 text-gray-500">Loading company details...</div>;
@@ -35,9 +52,18 @@ function CompanyDetails() {
                             <h1 className="font-bold text-2xl text-gray-900 dark:text-gray-100">{singleCompany?.name}</h1>
                         </div>
                     </div>
-                    <Button onClick={() => setOpen(true)} className="text-right bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
-                        <Edit size={16} />
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button onClick={() => setOpen(true)} className="text-right bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
+                            <Edit size={16} />
+                        </Button>
+                        {
+                            user && user.role == "admin" ?
+                                <Button onClick={() => handleDelete()} variant="destructive">
+                                    <Trash size={16} />
+                                </Button> : <></>
+                        }
+
+                    </div>
                 </div>
                 {/* Company Details */}
                 <div className="my-6">

@@ -54,7 +54,7 @@ function CompaniesTable() {
                             </TableCell>
                             <TableCell className="text-center py-4 px-4">
                                 {
-                                    user && user?._id == company.userId ?
+                                    user && user?._id == company.userId || user?.role == "admin" ?
                                         <Popover>
                                             <PopoverTrigger aria-label="More options">
                                                 <MoreHorizontal className="mx-auto" />

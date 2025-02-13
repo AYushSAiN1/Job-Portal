@@ -7,11 +7,12 @@ import Jobs from "./components/Jobs";
 import Browse from "./components/Browse";
 import Profile from "./components/Profile";
 import JobDescription from "./components/JobDescription";
-import Companies from "./components/admin/Companies";
-import AddCompanyForm from "./components/admin/AddCompanyForm";
-import CreateJobs from "./components/admin/CreateJobs";
-import CompanyDetail from "./components/admin/CompanyDetail";
-import JobApplicants from "./components/admin/JobApplicants";
+import Companies from "./components/recruiter/Companies";
+import AddCompanyForm from "./components/recruiter/AddCompanyForm";
+import CreateJobs from "./components/recruiter/CreateJobs";
+import CompanyDetail from "./components/recruiter/CompanyDetail";
+import JobApplicants from "./components/recruiter/JobApplicants";
+import ProtectedRoute from "./components/recruiter/ProtectedRoute";
 
 
 const appRouter = createBrowserRouter([
@@ -57,31 +58,31 @@ const appRouter = createBrowserRouter([
   {
     path: "/companies",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Companies />
+      <ProtectedRoute> <Companies /></ProtectedRoute>
     </ThemeProvider>,
   },
   {
     path: "/companies/:id",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <CompanyDetail />
+      <ProtectedRoute> <CompanyDetail /> </ProtectedRoute>
     </ThemeProvider>,
   },
   {
     path: "/companies/create",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <AddCompanyForm />
+      <ProtectedRoute> <AddCompanyForm /> </ProtectedRoute>
     </ThemeProvider>,
   },
   {
     path: "/jobs/create",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <CreateJobs />
+      <ProtectedRoute> <CreateJobs /> </ProtectedRoute>
     </ThemeProvider>,
   },
   {
     path: "/jobs/:id/applicants",
     element: <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <JobApplicants />
+      <ProtectedRoute> <JobApplicants /> </ProtectedRoute>
     </ThemeProvider>,
   },
 ]

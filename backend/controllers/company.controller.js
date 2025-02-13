@@ -1,7 +1,7 @@
 import { Company } from "../models/company.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import getDataUri from "../utils/datauri.js";
-
+import { User } from "../models/user.model.js";
 export const registerCompany = async (req, res) => {
   try {
     const { companyName, description, website, location } = req.body;
@@ -95,6 +95,7 @@ export const updateCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
     const companyId = req.params.id;
+    const userId = req.id;
 
     let company = await Company.findById(companyId);
     if (!company) {
@@ -102,7 +103,16 @@ export const updateCompany = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Company not found" });
     }
-    console.log("Updated Company Data Before Saving:", company);
+
+    let user = await User.findById(userId);
+    if (user.role !== "admin") {
+      if (company.userId.toString() !== user._id.toString()) {
+        return res.status(401).json({
+          message: "You are not authorised to perform this action",
+          success: false,
+        });
+      }
+    }
 
     let logo = company.logo;
 
@@ -120,7 +130,6 @@ export const updateCompany = async (req, res) => {
     company.logo = logo;
 
     await company.save();
-    console.log("Updated Company Data After Saving:", company);
     return res.status(200).json({
       success: true,
       message: "Company details updated successfully",
@@ -131,5 +140,41 @@ export const updateCompany = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+export const deleteComapany = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.id;
+    if (!id) {
+      return res
+        .status(400)
+        .json({ message: "Company ID is required", success: false });
+    }
+    const company = await Company.findById(id);
+    const user = await User.findById(userId);
+    if (!company) {
+      return res
+        .status(404)
+        .json({ message: "Company not found", success: false });
+    }
+    if (user.role !== "admin") {
+      if (company.userId.toString() !== user._id.toString()) {
+        return res.status(401).json({
+          message: "You are not authorised to perform this action",
+          success: false,
+        });
+      }
+    }
+    await Company.findByIdAndDelete(id);
+    return res
+      .status(200)
+      .json({ message: "Company deleted successfully", success: true });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: false });
   }
 };

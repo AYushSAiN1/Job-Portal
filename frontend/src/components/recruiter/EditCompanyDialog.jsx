@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,14 +14,26 @@ import { setSingleCompany } from "@/redux/companySlice";
 function EditCompanyDialog({ open, setOpen, company }) {
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState({
-        name: company?.name || "",
-        location: company?.location || "",
-        website: company?.website || "",
-        description: company?.description || "",
+        name: "",
+        location: "",
+        website: "",
+        description: "",
         companyLogo: null,
     });
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (company) {
+            setInput({
+                name: company.name || "",
+                location: company.location || "",
+                website: company.website || "",
+                description: company.description || "",
+                companyLogo: null,
+            });
+        }
+    }, [company]);
 
     const changeEventHandler = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
@@ -45,7 +57,6 @@ function EditCompanyDialog({ open, setOpen, company }) {
             formData.append("companyLogo", input.companyLogo);
         }
 
-
         try {
             setLoading(true);
             const res = await axios.put(`${COMPANY_API_ENDPOINT}/update/${company._id}`, formData, {
@@ -56,13 +67,6 @@ function EditCompanyDialog({ open, setOpen, company }) {
             if (res.data.success) {
                 toast.success(res.data.message);
                 dispatch(setSingleCompany(res.data.company));
-                setInput({
-                    name: res.data.company.name,
-                    location: res.data.company.location,
-                    website: res.data.company.website,
-                    description: res.data.company.description,
-                    companyLogo: null, // Reset file input
-                });
                 setOpen(false);
             }
         } catch (error) {
@@ -73,8 +77,22 @@ function EditCompanyDialog({ open, setOpen, company }) {
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-lg p-6  rounded-lg shadow-lg">
+        <Dialog
+            open={open}
+            onOpenChange={(isOpen) => {
+                setOpen(isOpen);
+                if (!isOpen) {
+                    setInput({
+                        name: company?.name || "",
+                        location: company?.location || "",
+                        website: company?.website || "",
+                        description: company?.description || "",
+                        companyLogo: null,
+                    });
+                }
+            }}
+        >
+            <DialogContent className="max-w-lg p-6 rounded-lg shadow-lg">
                 <DialogHeader>
                     <DialogTitle className="text-lg font-semibold">Edit Company</DialogTitle>
                     <DialogDescription>Update your company details and logo.</DialogDescription>
@@ -84,28 +102,28 @@ function EditCompanyDialog({ open, setOpen, company }) {
                     <div className="space-y-4">
                         <div>
                             <Label>Company Name</Label>
-                            <Input name="name" className="border border-gray-200 dark:border-gray-700 rounded-md" value={input.name} onChange={changeEventHandler} />
+                            <Input name="name" value={input.name} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Location</Label>
-                            <Input name="location" className="border border-gray-200 dark:border-gray-700 rounded-md" value={input.location} onChange={changeEventHandler} />
+                            <Input name="location" value={input.location} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Website</Label>
-                            <Input name="website" className="border border-gray-200 dark:border-gray-700 rounded-md" value={input.website} onChange={changeEventHandler} />
+                            <Input name="website" value={input.website} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Description</Label>
-                            <Textarea name="description" className="border border-gray-200 dark:border-gray-700 rounded-md" value={input.description} onChange={changeEventHandler} />
+                            <Textarea name="description" value={input.description} onChange={changeEventHandler} />
                         </div>
                         <div>
                             <Label>Company Logo</Label>
-                            <Input name="companyLogo" className="border border-gray-200 dark:border-gray-700 rounded-md" type="file" accept="image/*" onChange={fileChangeHandler} />
+                            <Input name="companyLogo" type="file" accept="image/*" onChange={fileChangeHandler} />
                         </div>
                     </div>
 
                     <DialogFooter className="flex justify-end gap-2 mt-8">
-                        <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button variant="outline" type="button" onClick={() => setOpen(false)}>Cancel</Button>
                         {loading ? (
                             <Button>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait

@@ -25,7 +25,7 @@ const isAuthorized = async (req, res, next) => {
         success: "false",
       });
     }
-    if (user.role != "recruiter") {
+    if (user.role !== "recruiter" && user.role !== "admin") {
       return res.status(403).json({
         message: "Forbidden route",
         success: "false",

@@ -42,7 +42,7 @@ function Navbar() {
         <div className="flex items-center gap-12">
           <ul className="flex font-medium items-center gap-8">
             {/* Display options for recruiter */}
-            {user?.role === 'recruiter' ? (
+            {user?.role === 'recruiter' || user?.role === "admin" ? (
               <>
                 <li className="relative">
                   {/* Company Button */}

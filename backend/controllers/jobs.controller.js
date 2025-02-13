@@ -1,4 +1,5 @@
 import { Job } from "../models/job.model.js";
+import { User } from "../models/user.model.js";
 
 export const postJob = async (req, res) => {
   try {
@@ -146,15 +147,17 @@ export const deleteJob = async (req, res) => {
     }
 
     const userId = req.id;
+    const user = await User.findById(userId);
     const job = await Job.findById(id);
     if (!job) {
       return res.status(404).json({ message: "Job not found", success: false });
     }
-
-    if (job.created_by.toString() !== userId) {
-      return res
-        .status(401)
-        .json({ message: "You are not authorized", success: false });
+    if (user.role !== "admin") {
+      if (job.created_by.toString() !== userId) {
+        return res
+          .status(401)
+          .json({ message: "You are not authorized", success: false });
+      }
     }
 
     await Job.findByIdAndDelete(id);

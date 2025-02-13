@@ -3,7 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
-import { profile } from "console";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const signin = async (req, res) => {
   try {
@@ -80,14 +82,11 @@ export const signup = async (req, res) => {
         success: false,
       });
     }
-
-    let profilePhoto = "";
-
-    if (req.file) {
-      console.log("Uploading file to cloud...");
-      const fileUri = getDataUri(req.file);
-      const cloudRes = await cloudinary.uploader.upload(fileUri.content);
-      profilePhoto = cloudRes.secure_url;
+    if (role === "admin" && req.body.adminSecret !== process.env.ADMIN_SECRET) {
+      return res.status(403).json({
+        message: "Unauthorized to create an admin account",
+        success: false,
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -98,17 +97,21 @@ export const signup = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
-      profile: { profilePhoto },
     });
 
-    const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { userId: newUser._id, role: newUser.role },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     return res
       .status(201)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
         sameSite: "strict",
       })
       .json({
@@ -119,7 +122,6 @@ export const signup = async (req, res) => {
           email: newUser.email,
           phoneNumber: newUser.phoneNumber,
           role: newUser.role,
-          profile: newUser.profile,
         },
         success: true,
       });

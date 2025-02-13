@@ -9,7 +9,7 @@ import AppliedJobsTable from './AppliedJobsTable';
 import EditProfileDialog from './EditProfileDialog';
 import { useSelector } from 'react-redux';
 import useGetAppliedJobs from '@/hooks/useGetAppliedJobs';
-import PostedJobsTable from './admin/PostedJobsTable';
+import PostedJobsTable from './recruiter/PostedJobsTable';
 import useGetAllPostedJobs from '@/hooks/useGetAllPostedJobs';
 
 function Profile() {

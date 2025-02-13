@@ -32,8 +32,6 @@ function AppliedJobsTable() {
                                 <TableCell className="py-4">{appliedJob?.createdAt ? formatDistanceToNow(new Date(appliedJob?.createdAt), { addSuffix: true }) : ''}</TableCell>
                             </TableRow>
                         ))}
-
-
                 </TableBody>
             </Table>
         </div>

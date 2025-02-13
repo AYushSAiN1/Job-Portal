@@ -2,6 +2,7 @@ import express from "express";
 
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import {
+  deleteComapany,
   getCompany,
   getCompanyById,
   registerCompany,
@@ -20,5 +21,7 @@ router.route("/get/:id").get(getCompanyById);
 router
   .route("/update/:id")
   .put(isAuthenticated, isAuthorized, uploadFiles, updateCompany);
-
+router
+  .route("/:id/delete")
+  .delete(isAuthenticated, isAuthorized, deleteComapany);
 export default router;

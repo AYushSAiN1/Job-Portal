@@ -16,12 +16,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const allowedOrigins = [
+  "https://job-portal-three-delta.vercel.app", // Correct frontend URL
+];
+
 const corsOptions = {
-  origin:
-    "https://job-portal-pro1731v6-ayush-sainis-projects-d830cc11.vercel.app/",
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow cookies and authentication headers
 };
 
+app.use(cors(corsOptions));
 app.use(cors(corsOptions));
 
 //API

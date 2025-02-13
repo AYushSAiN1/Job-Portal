@@ -50,7 +50,7 @@ export const signin = async (req, res) => {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
-        sameSite: "Lax",
+        sameSite: "None",
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -114,7 +114,7 @@ export const signup = async (req, res) => {
         maxAge: 1 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
-        sameSite: "Lax",
+        sameSite: "None",
       })
       .json({
         message: "Account created successfully",

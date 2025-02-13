@@ -17,7 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin:
+    "https://job-portal-pro1731v6-ayush-sainis-projects-d830cc11.vercel.app/",
   credentials: true,
 };
 

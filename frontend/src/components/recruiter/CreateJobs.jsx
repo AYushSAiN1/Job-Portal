@@ -53,14 +53,12 @@ function CreateJobs() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting job post...");
         dispatch(setLoading(true));
 
         try {
             const res = await axios.post(`${JOB_API_ENDPOINT}/post`, formData, { withCredentials: true });
             if (res.data.success) {
                 toast.success(res.data.message);
-                console.log("Navigating to /companies...");
                 navigate("/companies");
             }
         } catch (error) {

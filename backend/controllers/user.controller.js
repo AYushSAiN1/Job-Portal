@@ -48,6 +48,7 @@ export const signin = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
         secure: true,
         sameSite: "None",
       })
@@ -111,6 +112,7 @@ export const signup = async (req, res) => {
       .status(201)
       .cookie("token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
         secure: true,
         sameSite: "None",
       })

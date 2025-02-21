@@ -1,63 +1,55 @@
 import React from 'react';
-import { Facebook, Instagram, Linkedin, Twitter, } from 'react-feather';
+import { Facebook, Instagram, Linkedin, Twitter } from 'react-feather';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-10">
-            <div className="max-w-8xl mx-auto px-4 mt-2 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <footer className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-5 px-4 md:px-8">
+            <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-xs sm:text-sm text-center sm:text-left">
+
                     {/* About Section */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">About Us</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            We are the leading platform connecting talented individuals with top employers. Your dream job is just a click away!
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold">About Us</h3>
+                        <p className="text-gray-600 dark:text-gray-400 leading-snug">
+                            Connecting talented individuals with top employers.
                         </p>
                     </div>
 
                     {/* Quick Links */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-                        <ul className="space-y-2">
-                            <li><a href="#jobs" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">Latest Jobs</a></li>
-                            <li><a href="#about" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">About Us</a></li>
-                            <li><a href="#contact" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">Contact</a></li>
-                            <li><a href="#faq" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">FAQs</a></li>
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold">Quick Links</h3>
+                        <ul className="space-y-1">
+                            <li><a href="#jobs" className="hover:text-blue-600 transition">Latest Jobs</a></li>
+                            <li><a href="#about" className="hover:text-blue-600 transition">About Us</a></li>
+                            <li><a href="#contact" className="hover:text-blue-600 transition">Contact</a></li>
+                            <li><a href="#faq" className="hover:text-blue-600 transition">FAQs</a></li>
                         </ul>
                     </div>
 
                     {/* Contact Info */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Contact Us</h3>
-                        <ul className="space-y-2">
-                            <li><span className="block text-gray-600 dark:text-gray-400">Email:</span> support@jobhunt.com</li>
-                            <li><span className="block text-gray-600 dark:text-gray-400">Phone:</span> +1 234 567 890</li>
-                            <li><span className="block text-gray-600 dark:text-gray-400">Address:</span> 123 Dream Jobs Lane, Success City, USA</li>
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold">Contact</h3>
+                        <ul className="space-y-1">
+                            <li className="text-gray-700 dark:text-gray-300"><strong>Email:</strong> support@jobhunt.com</li>
+                            <li className="text-gray-700 dark:text-gray-300"><strong>Phone:</strong> +1 234 567 890</li>
                         </ul>
                     </div>
 
                     {/* Social Media */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Follow Us</h3>
-                        <div className="flex space-x-4">
-                            <a href="https://facebook.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                                <Facebook className="w-6 h-6" />
-                            </a>
-                            <a href="https://twitter.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                                <Twitter className="w-6 h-6" />
-                            </a>
-                            <a href="https://instagram.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                                <Instagram className="w-6 h-6" />
-                            </a>
-                            <a href="https://linkedin.com" className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
-                                <Linkedin className="w-6 h-6" />
-                            </a>
+                    <div className="space-y-2">
+                        <h3 className="text-sm font-semibold">Follow Us</h3>
+                        <div className="flex justify-center sm:justify-start space-x-3">
+                            <a href="https://facebook.com" className="hover:text-blue-600 transition"><Facebook className="w-4 h-4" /></a>
+                            <a href="https://twitter.com" className="hover:text-blue-600 transition"><Twitter className="w-4 h-4" /></a>
+                            <a href="https://instagram.com" className="hover:text-blue-600 transition"><Instagram className="w-4 h-4" /></a>
+                            <a href="https://linkedin.com" className="hover:text-blue-600 transition"><Linkedin className="w-4 h-4" /></a>
                         </div>
                     </div>
                 </div>
-                <div className="mt-10 border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                        © {new Date().getFullYear()} Job Hunt. All rights reserved.
-                    </p>
+
+                {/* Copyright Section */}
+                <div className="mt-4 border-t border-gray-300 dark:border-gray-700 pt-3 text-center text-xs text-gray-600 dark:text-gray-400">
+                    © {new Date().getFullYear()} Job Hunt. All rights reserved.
                 </div>
             </div>
         </footer>

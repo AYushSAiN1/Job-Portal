@@ -3,7 +3,7 @@ import { Facebook, Instagram, Linkedin, Twitter } from 'react-feather';
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-5 px-4 md:px-8">
+        <footer className="bg-gray-100 dark:bg-transparent text-gray-900 dark:text-gray-100 py-5 px-4 md:px-8">
             <div className="max-w-6xl mx-auto">
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-xs sm:text-sm text-center sm:text-left">
 

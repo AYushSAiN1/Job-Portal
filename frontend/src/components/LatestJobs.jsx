@@ -6,7 +6,7 @@ const LatestJobs = () => {
     const { allJobs } = useSelector(state => state.job);
 
     return (
-        <div className="relative bg-white dark:bg-transparent text-gray-900 dark:text-gray-100 min-h-[45vh] flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 mx-auto mt-14 mb-14">
+        <div className="relative bg-white dark:bg-transparent text-gray-900 dark:text-gray-100 min-h-[45vh] flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 mx-auto mt-2 mb-14">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white mb-5">
                 Latest Job Openings
             </h2>

@@ -10,7 +10,7 @@ const Signin = () => {
     return (
         <div>
             <Navbar />
-            <div className="flex justify-center max-h-screen dark:bg-transparent mt-8 mb-8">
+            <div className="flex justify-center max-h-screen dark:bg-transparent mt-8 mb-14">
                 <div className="w-full max-w-lg bg-white dark:bg-transparent rounded-lg shadow-lg border-2 border-gray p-8">
                     {/* Tab Navigation */}
                     <div className="flex justify-center border-b border-gray-300 dark:border-gray-700 mb-6">
@@ -35,7 +35,7 @@ const Signin = () => {
                     </div>
 
                     {/* Form Content */}
-                    <div className="transition-all duration-300">
+                    <div className="transition-all duration-300 ">
                         {activeTab === "login" ? <LoginForm /> : <SignupForm />}
                     </div>
 

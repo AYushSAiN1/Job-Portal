@@ -11,19 +11,21 @@ const Home = () => {
     useGetAllJobs();
     const { user } = useSelector(store => store.auth);
     const navigate = useNavigate();
-    const location = useLocation();  // 🔹 Get current route
+    const location = useLocation();
 
     useEffect(() => {
         if ((user?.role === "recruiter" || user?.role === "admin") && location.pathname !== "/companies") {
             navigate("/companies");
         }
-    }, [user, navigate, location.pathname]);  // 🔹 Add location.pathname as a dependency
+    }, [user, navigate, location.pathname]);
 
     return (
-        <div>
+        <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
             <Navbar />
-            <HeroSection />
-            <LatestJobs />
+            <main>
+                <HeroSection />
+                <LatestJobs />
+            </main>
             <Footer />
         </div>
     );

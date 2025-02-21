@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Book, LogIn, LogOut, User2, Plus, Building, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, Menu, X } from 'lucide-react';
 import { ModeToggle } from '../theme/mode-toggle';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +9,6 @@ import axios from 'axios';
 import { USER_API_ENDPOINT } from '@/utils/constant';
 import { setUser } from '@/redux/authSlice';
 import { toast } from 'sonner';
-import { Briefcase } from 'react-feather';
 
 function Navbar() {
   const { user } = useSelector((store) => store.auth);
@@ -42,22 +41,39 @@ function Navbar() {
           Job <span className="text-[#F83002] dark:text-[#9F0E0E]">Portal</span>
         </Link>
 
-        <div className="md:hidden">
-          <button onClick={toggleMobileMenu} className="text-gray-700 dark:text-gray-300">
+        {/* Mobile Menu Toggle Button and Avatar */}
+        <div className="md:hidden flex items-center gap-4">
+          {user && (
+            <Link to="/profile" className="hover:opacity-80 transition">
+              <Avatar className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:border-[#F83002] transition">
+                <AvatarImage src={user?.profile?.profilePhoto || "https://via.placeholder.com/150"} alt="profile" />
+                <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
+              </Avatar>
+            </Link>
+          )}
+          <button
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+            className="text-gray-700 dark:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+          >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-6 font-medium text-gray-800 dark:text-gray-200">
-            <li><Link to="/" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E]">Home</Link></li>
-            <li><Link to="/jobs" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E]">Jobs</Link></li>
-            <li><Link to="/browse" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E]">Browse</Link></li>
+            <li><Link to="/" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
+            <li><Link to="/jobs" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
+            <li><Link to="/browse" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
           </ul>
           <ModeToggle />
           <div className="flex items-center gap-6">
             {!user ? (
-              <Link to="/signin" className="px-4 py-2 flex gap-2 border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] transition">
+              <Link
+                to="/signin"
+                className="px-4 py-2 flex gap-2 border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] transition"
+              >
                 <LogIn size={20} /> Sign In
               </Link>
             ) : (
@@ -78,8 +94,11 @@ function Navbar() {
                       <p className="text-sm text-gray-500 dark:text-gray-400">{user?.profile?.bio || "No bio available"}</p>
                     </div>
                   </Link>
-                  <hr className="border-gray-300 dark:border-gray-600" />
-                  <button onClick={logoutHandler} className="flex items-center gap-3 p-2 rounded-lg text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 transition">
+                  <hr className="border-gray-300 dark:border-gray-600 my-2" />
+                  <button
+                    onClick={logoutHandler}
+                    className="flex items-center gap-3 p-2 rounded-lg text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 transition w-full"
+                  >
                     <LogOut size={20} /> Log Out
                   </button>
                 </PopoverContent>
@@ -88,20 +107,43 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-900 shadow-lg p-4">
+        <div className="md:hidden fixed inset-0 bg-white dark:bg-gray-900 z-50 flex flex-col p-6 transition-transform duration-300 ease-in-out">
+          {/* Close Button */}
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={toggleMobileMenu}
+              aria-label="Close mobile menu"
+              className="text-gray-700 dark:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            >
+              <X size={28} />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
           <ul className="flex flex-col gap-4 font-medium text-gray-800 dark:text-gray-200">
-            <li><Link to="/" onClick={toggleMobileMenu}>Home</Link></li>
-            <li><Link to="/jobs" onClick={toggleMobileMenu}>Jobs</Link></li>
-            <li><Link to="/browse" onClick={toggleMobileMenu}>Browse</Link></li>
+            <li><Link to="/" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
+            <li><Link to="/jobs" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
+            <li><Link to="/browse" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
           </ul>
-          <div className="mt-4">
+
+          {/* Log Out Button */}
+          <div className="mt-6">
             {!user ? (
-              <Link to="/signin" onClick={toggleMobileMenu} className="block px-4 py-2 text-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] transition">
+              <Link
+                to="/signin"
+                onClick={toggleMobileMenu}
+                className="block px-4 py-2 text-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] transition"
+              >
                 Sign In
               </Link>
             ) : (
-              <button onClick={logoutHandler} className="block w-full px-4 py-2 text-center text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 transition">
+              <button
+                onClick={logoutHandler}
+                className="block w-full px-4 py-2 text-center text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 transition mt-2"
+              >
                 Log Out
               </button>
             )}

@@ -76,7 +76,7 @@ function EditProfileDialog({ open, setOpen }) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-lg p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+            <DialogContent className="max-w-lg  p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                 <DialogHeader>
                     <DialogTitle className="text-lg font-semibold">Edit Profile</DialogTitle>
                     <DialogDescription>

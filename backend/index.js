@@ -15,10 +15,20 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigins = [
+  "https://job-portal-pro1731v6-ayush-sainis-projects-d830cc11.vercel.app",
+  "https://job-portal-three-delta.vercel.app",
+];
+
 app.use(
   cors({
-    origin:
-      "https://job-portal-pro1731v6-ayush-sainis-projects-d830cc11.vercel.app",
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

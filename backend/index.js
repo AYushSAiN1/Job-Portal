@@ -15,10 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const allowedOrigins = [
-  "https://job-portal-pro1731v6-ayush-sainis-projects-d830cc11.vercel.app",
-  "https://job-portal-three-delta.vercel.app",
-];
+const allowedOrigins = ["https://job-portal-psi-green.vercel.app"];
 
 app.use(
   cors({
@@ -34,6 +31,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// Handle preflight requests
+app.options("*", cors());
 //API
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", companyRoute);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { LogIn, LogOut, Menu, X } from 'lucide-react';
+import { LogIn, LogOut, Menu, X, Plus } from 'lucide-react';
 import { ModeToggle } from '../theme/mode-toggle';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,11 +62,29 @@ function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <ul className="flex items-center gap-6 font-medium text-gray-800 dark:text-gray-200">
-            <li><Link to="/" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
-            <li><Link to="/jobs" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
-            <li><Link to="/browse" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
-          </ul>
+          {user && (user.role === "admin" || user.role === "recruiter") ? (
+            <>
+              <Link
+                to="/compan/iescreate"
+                className="px-4 py-2 flex gap-2 items-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] dark:hover:text-black transition"
+              >
+                <Plus size={20} /> Create Company
+              </Link>
+              <Link
+                to="/jobs/create"
+                className="px-4 py-2 flex gap-2 items-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] dark:hover:text-black transition"
+              >
+                <Plus size={20} /> Create Job
+              </Link>
+            </>
+          ) : (
+            <ul className="flex items-center gap-6 font-medium text-gray-800 dark:text-gray-200">
+              <li><Link to="/" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
+              <li><Link to="/jobs" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
+              <li><Link to="/browse" className="hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
+            </ul>
+          )}
+
           <ModeToggle />
           <div className="flex items-center gap-6">
             {!user ? (
@@ -122,12 +140,32 @@ function Navbar() {
             </button>
           </div>
 
-          {/* Navigation Links */}
-          <ul className="flex flex-col gap-4 font-medium text-gray-800 dark:text-gray-200">
-            <li><Link to="/" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
-            <li><Link to="/jobs" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
-            <li><Link to="/browse" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
-          </ul>
+          {
+            user && (user.role === "admin" || user.role === "recruiter") ?
+              <div className="mt-4">
+                <Link
+                  to="/companies/create"
+                  onClick={toggleMobileMenu}
+                  className="block px-4 py-2 text-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] dark:hover:text-black transition mb-2"
+                >
+                  Create Company
+                </Link>
+                <Link
+                  to="/jobs/create"
+                  onClick={toggleMobileMenu}
+                  className="block px-4 py-2 text-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] dark:hover:text-black transition"
+                >
+                  Create Job
+                </Link>
+              </div>
+              :
+              < ul className="flex flex-col gap-4 font-medium text-gray-800 dark:text-gray-200">
+                <li><Link to="/" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Home</Link></li>
+                <li><Link to="/jobs" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Jobs</Link></li>
+                <li><Link to="/browse" onClick={toggleMobileMenu} className="block py-2 hover:text-[#F83002] dark:hover:text-[#9F0E0E] transition">Browse</Link></li>
+              </ul>
+
+          }
 
           {/* Log Out Button */}
           <div className="mt-6">
@@ -149,8 +187,9 @@ function Navbar() {
             )}
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

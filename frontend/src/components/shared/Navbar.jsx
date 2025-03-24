@@ -65,7 +65,7 @@ function Navbar() {
           {user && (user.role === "admin" || user.role === "recruiter") ? (
             <>
               <Link
-                to="/compan/iescreate"
+                to="/companies/create"
                 className="px-4 py-2 flex gap-2 items-center border rounded-lg text-[#F83002] border-[#F83002] hover:bg-[#F83002] hover:text-white dark:border-[#9F0E0E] dark:text-[#9F0E0E] dark:hover:bg-[#9F0E0E] dark:hover:text-black transition"
               >
                 <Plus size={20} /> Create Company

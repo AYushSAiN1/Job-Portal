@@ -21,106 +21,117 @@ function Profile() {
         useGetAllPostedJobs();
     }
 
+    // Fallback values for profile data
+    const profileData = user?.profile || {};
+    const fullName = user?.fullname || 'No Name Provided';
+    const email = user?.email || 'No Email Provided';
+    const phoneNumber = user?.phoneNumber || 'Not provided';
+    const bio = profileData.bio || 'No bio available';
+    const skills = profileData.skills || [];
+    const resume = profileData.resume;
+    const resumeName = profileData.resumeOriginalName || 'View Resume';
+    const initials = fullName.split(' ').map(name => name[0]).join('').toUpperCase();
+
     return (
         <div className="min-h-screen bg-gray-900 text-white">
             <Navbar />
 
-            {/* Profile Card */}
-            <div className="max-w-4xl mx-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl my-8 p-8 sm:p-10 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="flex flex-col sm:flex-row items-center gap-6 w-full">
+            <div className="max-w-4xl mx-auto px-4 py-8">
+                {/* Profile Card */}
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 mb-8">
+                    <div className="flex flex-col sm:flex-row gap-6 items-start">
+                        {/* Avatar Section */}
+                        <div className="flex flex-col items-center gap-4">
+                            <Avatar className="h-28 w-28 border-4 border-indigo-500 shadow-lg">
+                                <AvatarImage src={profileData.profilePhoto} alt={`${fullName}'s profile`} />
+                                <AvatarFallback>{initials}</AvatarFallback>
+                            </Avatar>
+                            <Button
+                                onClick={() => setOpen(true)}
+                                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg transition-all"
+                                aria-label="Edit Profile"
+                            >
+                                <Edit size={18} />
+                                <span className="font-semibold">Edit</span>
+                            </Button>
+                        </div>
 
-                    {/* Profile Image & Info Container */}
-                    <div className="flex items-center gap-6 w-full">
-                        {/* Profile Avatar */}
-                        <Avatar className="h-24 w-24 sm:h-28 sm:w-28 border-4 border-indigo-500 shadow-lg transform hover:scale-105 transition-all duration-300">
-                            <AvatarImage src={user?.profile.profilePhoto} alt="profile" />
-                            <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
-                        </Avatar>
-
-                        {/* Profile Name & Bio */}
-                        <div className="flex-1">
-                            <h1 className="font-bold text-2xl sm:text-3xl text-gray-900 dark:text-gray-100">
-                                {user?.fullname}
+                        {/* Profile Info Section */}
+                        <div className="flex-1 w-full">
+                            <h1 className="font-bold text-2xl sm:text-3xl text-gray-900 dark:text-gray-100 mb-2">
+                                {fullName}
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-lg mt-1 italic">
-                                {user?.profile.bio || "No bio available"}
+
+                            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-6 italic">
+                                {bio}
                             </p>
-                        </div>
 
-                        {/* Edit Button - Now Looks Natural */}
-                        <Button
-                            onClick={() => setOpen(true)}
-                            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg transition-all duration-300 transform hover:scale-105"
-                            aria-label="Edit Profile"
-                        >
-                            <Edit size={18} />
-                            <span className="hidden sm:inline font-semibold">Edit</span>
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Contact Info */}
-                <div className="mt-6 space-y-4 text-base sm:text-lg">
-                    <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <Mail size={20} className="text-indigo-500" />
-                        <span>{user?.email}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
-                        <Phone size={20} className="text-indigo-500" />
-                        <span>{user?.phoneNumber || "Not provided"}</span>
-                    </div>
-                </div>
-
-                {/* Skills & Resume (Only for Candidates) */}
-                {user?.role !== "recruiter" && (
-                    <>
-                        <div className="mt-6">
-                            <h1 className="font-semibold text-lg sm:text-xl text-gray-900 dark:text-gray-100 mb-3">
-                                Skills
-                            </h1>
-                            <div className="flex flex-wrap gap-2 sm:gap-3">
-                                {user?.profile.skills?.length > 0 ? (
-                                    user.profile.skills.map((item, index) => (
-                                        <Badge
-                                            key={index}
-                                            className="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-md transition-all duration-300"
-                                        >
-                                            {item}
-                                        </Badge>
-                                    ))
-                                ) : (
-                                    <span className="text-gray-500">No skills added</span>
-                                )}
+                            {/* Contact Info */}
+                            <div className="space-y-3 mb-6">
+                                <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                                    <Mail size={20} className="text-indigo-500 flex-shrink-0" />
+                                    <span className="break-all">{email}</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+                                    <Phone size={20} className="text-indigo-500 flex-shrink-0" />
+                                    <span>{phoneNumber}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="mt-6">
-                            <Label className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                                Resume
-                            </Label>
-                            {user?.profile.resume ? (
-                                <a
-                                    target="_blank"
-                                    href={user.profile.resume}
-                                    className="text-indigo-600 hover:text-indigo-700 hover:underline cursor-pointer block mt-2 text-lg transition-all duration-300"
-                                >
-                                    {user?.profile.resumeOriginalName || "View Resume"}
-                                </a>
-                            ) : (
-                                <span className="text-gray-500">No resume uploaded</span>
+                            {/* Skills & Resume (Only for Candidates) */}
+                            {user?.role !== "recruiter" && (
+                                <>
+                                    <div className="mb-6">
+                                        <h2 className="font-semibold text-lg text-gray-900 dark:text-gray-100 mb-3">
+                                            Skills
+                                        </h2>
+                                        <div className="flex flex-wrap gap-2">
+                                            {skills.length > 0 ? (
+                                                skills.map((skill, index) => (
+                                                    <Badge
+                                                        key={index}
+                                                        className="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded-lg"
+                                                    >
+                                                        {skill}
+                                                    </Badge>
+                                                ))
+                                            ) : (
+                                                <span className="text-gray-500 dark:text-gray-400">No skills added</span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <Label className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                            Resume
+                                        </Label>
+                                        {resume ? (
+                                            <a
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href={resume}
+                                                className="text-indigo-600 hover:text-indigo-700 hover:underline cursor-pointer block mt-2"
+                                            >
+                                                {resumeName}
+                                            </a>
+                                        ) : (
+                                            <span className="text-gray-500 dark:text-gray-400">No resume uploaded</span>
+                                        )}
+                                    </div>
+                                </>
                             )}
                         </div>
-                    </>
-                )}
-            </div>
+                    </div>
+                </div>
 
-            {/* Job Tables */}
-            <div className="max-w-4xl mx-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl shadow-xl p-6 sm:p-10 my-8 hover:shadow-2xl transition-all duration-300">
-                <h1 className="font-bold text-lg sm:text-2xl text-gray-900 dark:text-gray-100 mb-6">
-                    {user?.role === "recruiter" ? "Posted Jobs" : "Applied Jobs"}
-                </h1>
-                <div className="overflow-x-auto">
-                    {user?.role === "recruiter" ? <PostedJobsTable /> : <AppliedJobsTable />}
+                {/* Job Tables */}
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl shadow-xl p-6 sm:p-8 hover:shadow-2xl transition-all">
+                    <h2 className="font-bold text-xl sm:text-2xl text-gray-900 dark:text-gray-100 mb-6">
+                        {user?.role === "recruiter" ? "Posted Jobs" : "Applied Jobs"}
+                    </h2>
+                    <div className="overflow-x-auto">
+                        {user?.role === "recruiter" ? <PostedJobsTable /> : <AppliedJobsTable />}
+                    </div>
                 </div>
             </div>
 

@@ -17,12 +17,12 @@ function JobApplicants() {
     const { id } = useParams();
     useGetAllApplicants(id);
     const dispatch = useDispatch();
-    const { applicants } = useSelector((state) => state.application);
-    const loading = useSelector((state) => state.auth.loading); // Get loading state
+    const { applicants = [] } = useSelector((state) => state.application); // Fallback to empty array
+    const loading = useSelector((state) => state.auth.loading);
 
     const handleStatusChange = async (applicantId, status) => {
         try {
-            dispatch(setLoading(true)); // Correct Redux dispatch
+            dispatch(setLoading(true));
             axios.defaults.withCredentials = true;
             const res = await axios.put(`${APPLICATION_API_ENDPOINT}/${applicantId}/update`, { status });
             if (res.data.success) {
@@ -34,7 +34,7 @@ function JobApplicants() {
         } catch (error) {
             toast.error(error.response?.data?.message || "An error occurred.");
         } finally {
-            dispatch(setLoading(false)); // Correct Redux dispatch
+            dispatch(setLoading(false));
         }
     };
 
@@ -59,7 +59,7 @@ function JobApplicants() {
                     Applicants
                 </h2>
 
-                {applicants.length > 0 ? (
+                {applicants && applicants.length > 0 ? (
                     <Table className="w-full text-sm text-gray-900 dark:text-white">
                         <TableHeader>
                             <TableRow className="bg-gray-100 dark:bg-gray-700">
